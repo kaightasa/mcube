@@ -26,7 +26,6 @@ void exit_irq(void)
   disable_previous_irq();
 }
 
-
 void clear_bss(void)
 {
   extern unsigned long __bss_begin, __bss_end;
@@ -44,6 +43,7 @@ void init_arch(void)
   init_spinlock();
   init_irq();
   init_cpu();
+  init_tmap();
 
 
   /* One-core one-thread execution model (serialized cluster + cpu ID == thread ID). */

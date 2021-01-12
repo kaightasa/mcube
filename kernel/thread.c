@@ -62,7 +62,11 @@ struct thread_struct *do_create_thread(void *(*func)(void *),
   index = id - 1;
 
   if (index < NR_THREADS) {
-    ths[index].id = id;
+    if (attr) {
+      ths[index].id = attr->core_id;
+    } else {
+      ths[index].id = id;
+    }
     ths[index].state = UNADMITTED;
     ths[index].tk = current_task;
 
@@ -98,4 +102,16 @@ struct thread_struct *do_create_thread(void *(*func)(void *),
     print("do_create_thread(): Error: %lu exceed NR_THREADS %d\n", id, NR_THREADS);
     return NULL;
   }
+}
+
+struct thread_struct *get_thread_struct_from_id(struct thread_map *thmap,
+                                                unsigned long id)
+{
+  int i;
+  for (i = 0; i < NR_THREADS; i++) {
+    if (thmap[i].id == id) {
+      return thmap[i].p_thread_struct;
+    }
+  }
+  return NULL;
 }
