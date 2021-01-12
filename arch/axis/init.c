@@ -43,7 +43,6 @@ void init_arch(void)
   init_spinlock();
   init_irq();
   init_cpu();
-  init_tmap();
 
 
   /* One-core one-thread execution model (serialized cluster + cpu ID == thread ID). */
