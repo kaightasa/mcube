@@ -330,7 +330,7 @@ struct th_attr {
   /**
    * core_id.
    */
-  //unsigned long core_id;
+  unsigned long core_id;
 
   /**
    * stack size.
@@ -725,6 +725,42 @@ void arch_switch_to(struct thread_struct *prev, struct thread_struct *next);
  * @return thread id.
  */
 int get_thread_id(struct thread_struct *th);
+
+/**
+ * @struct thread_map
+ * @brief Mapping of threadID and thread_struct.
+ */
+struct thread_map{
+  /**
+   * ThreadID.
+   */
+  unsigned long id;
+  /**
+   * Pointer to thread_struct.
+   */
+  struct thread_struct *p_thread_struct;
+};
+/**
+ * @typedef thread_map
+ * @brief Typedef of @struct thread_map.
+ */
+typedef struct thread_map thread_map;
+
+/**
+ * @var thmaps[NR_THREADS]
+ * @brief Thread map.
+ */
+extern struct thread_map thmaps[NR_THREADS];
+
+/**
+ * @fn struct thread_struct *get_thread_struct_from_id(struct thread_map *thmap,
+ *                                                     unsigned long id)
+ * @brief get pointer to thread_struct from threadID.
+ * @param thmap Pointer to mapping.
+ * @param id ThreadID.
+ */
+struct thread_struct *get_thread_struct_from_id(struct thread_map *thmap,
+                                                unsigned long id)
 
 #endif /* __ASSEMBLY__ */
 #endif /* __MCUBE_MCUBE_THREAD_H__ */

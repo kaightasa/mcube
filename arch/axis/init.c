@@ -26,7 +26,6 @@ void exit_irq(void)
   disable_previous_irq();
 }
 
-
 void clear_bss(void)
 {
   extern unsigned long __bss_begin, __bss_end;

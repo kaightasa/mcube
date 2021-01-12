@@ -28,6 +28,7 @@ int user_thread_main(void)
   int nr_threads = 2;
   uint32_t ids[NR_THREADS];
   struct th_attr thas[NR_THREADS];
+  struct thread_map thmaps[NR_THREADS];
 
   init_thas(thas);
   sched_time = 5;
@@ -41,11 +42,16 @@ int user_thread_main(void)
     thas[i].period = 100;
     thas[i].wcet = 10;
     thas[i].relative_deadline = thas[i].period;
+    thas[i].core_id = i + 1;
 
-    if (do_create_thread(user_func, &ids[i], &thas[i]) == NULL) {
+    struct thread_struct *p_th;
+
+    if ((p_th = do_create_thread(user_func, &ids[i], &thas[i])) == NULL) {
       printk("Error: cannot create thread %d.\n", ids[i]);
       return -1;
     }
+    thmaps[i].id = thas[i].core_id;
+    thmaps[i].p_thread_struct = p_th;
   }
 
   set_timer_period(USEC_TO_CPU_CLOCK(100));
